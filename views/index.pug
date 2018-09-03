@@ -1,0 +1,69 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    title Multiplayer game 
+    script(src='node_modules/socket.io-client/dist/socket.io.js')
+    script(src='./js/index.js')
+    script(src='https://code.jquery.com/jquery-3.3.1.min.js', integrity='sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=', crossorigin='anonymous')
+    script(src='./semantic/semantic.min.js')
+    script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js', integrity='sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy', crossorigin='anonymous')
+    
+    link(rel='stylesheet', href='https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css', integrity='sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO', crossorigin='anonymous')
+    link(rel='stylesheet', href='./semantic/semantic.min.css')
+    link(rel='stylesheet', href='./css/style.css')
+    link(href='https://fonts.googleapis.com/css?family=Stalinist+One', rel='stylesheet')
+  body
+    .ui.red.three.item.menu
+      a#launch.active.item Start game
+      p#gameTitle.item HUNGRY SQUARES
+      a#disconnect.item Disconnect
+    #steps
+      .ui.steps
+        .step
+          i.address.card.icon
+          .content
+            .title Step 1 - Your name
+            .description Choose your player name
+        .step
+          i.user.secret.icon
+          .content
+            .title Step 2 - Wait your opponent
+            .description His name will appear next to yours
+        .step
+          i.game.icon
+          .content
+            .title Step 3 - Play !
+            .description
+              p
+                | Click on start game to start.
+                br
+                | The fastest Hungry Square win !
+    #gameZone
+      #gameFrame
+        #registerForm
+          .ui.form.success
+            .field
+              label Pseudo
+              input#pseudoInput(placeholder='Votre Pseudo...', name='username', type='text')
+            #greeting.ui.success.message(style='display: none;')
+              .header Merci
+              p Cliquez sur launch pour commencer.
+            #submitButton.ui.submit.button Submit
+      #scores
+        .innerScore
+          h2#player1
+          p#scoreP1
+        .innerScore
+          h2#player2
+          p#scoreP2
+    .container
+      .form-row
+        .form-group.col-md-4
+          label Names : 
+          #allPlayerNames
+        .form-group.col-md-4
+          label Scores : 
+          #allPlayerScores
+      button#getScores.btn.btn-primary Get Scores
