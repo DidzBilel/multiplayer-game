@@ -1,0 +1,31 @@
+{
+  "name": "multiplayer-game",
+  "version": "1.0.0",
+  "description": "Multiplayer game",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ajax",
+    "mongodb",
+    "jquery",
+    "angularjs",
+    "semantic-ui",
+    "vuejs"
+  ],
+  "author": "Taillasson Camille-Olivier",
+  "license": "ISC",
+  "dependencies": {
+    "angular": "^1.7.2",
+    "chalk": "^2.4.1",
+    "express": "^4.16.3",
+    "jquery": "^3.3.1",
+    "mongodb": "^3.1.0",
+    "mongoose": "^5.2.3",
+    "pug": "^2.0.0-rc.4",
+    "semantic-ui": "^2.3.2",
+    "socket.io": "^2.1.1",
+    "vue": "^2.5.16"
+  }
+}
