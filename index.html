@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multiplayer game </title>
+  <script src="node_modules/socket.io-client/dist/socket.io.js"></script>
+  <script src="./js/index.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
+  <script src="./semantic/semantic.min.js"></script>
+  <link rel="stylesheet" href="./semantic/semantic.min.css">
+  <link rel="stylesheet" href="./css/style.css">
+  <link href="https://fonts.googleapis.com/css?family=Stalinist+One" rel="stylesheet">
+</head>
+
+<body>
+  <div class="ui red five item menu">
+    <a class="active item" id="launch">Start game</a>
+    <p class="item" id="gameTitle">HUNGRY SQUARES</p>
+    <a class="item" id="disconnect">Disconnect</a>
+  </div>
+  <div id="steps">
+  <div class="ui steps">
+      <div class="step">
+        <i class="address card icon"></i>
+        <div class="content">
+          <div class="title">Step 1 - Your name</div>
+          <div class="description">Choose your player name</div>
+        </div>
+      </div>
+      <div class="step">
+        <i class="user secret icon"></i>
+        <div class="content">
+          <div class="title">Step 2 - Wait your opponent</div>
+          <div class="description">His name will appear next to yours</div>
+        </div>
+      </div>
+      <div class="step">
+        <i class="game icon"></i>
+        <div class="content">
+          <div class="title">Step 3 - Play !</div>
+          <div class="description"><p>Click on start game to start.<br>The fastest Hungry Square win !</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div><p><a href="highScores.html">High Scores</a></p></div>
+    <div id="gameZone">
+      <div id="gameFrame">
+        <div id="registerForm">
+          <div class="ui form success">
+            <div class="field">
+              <label>Pseudo</label>
+              <input placeholder="Votre Pseudo..." type="text" name="username" id="pseudoInput">
+            </div>
+            <div class="ui success message" id="greeting" style="display: none;">
+              <div class="header">Merci</div>
+              <p>Cliquez sur launch pour commencer.</p>
+            </div>
+            <div class="ui submit button" id="submitButton">Submit</div>
+          </div>
+        </div>
+      </div>
+      <div id="scores">
+          <div class="innerScore"><h2 id="player1"></h2>
+            <p id="scoreP1"></p>
+          </div>
+          <div class="innerScore"><h2 id="player2"></h2>
+            <p id="scoreP2"></p>
+          </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label>Names : </label>
+                <div id="allPlayerNames">
+
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <label>Scores : </label>
+                <div id="allPlayerScores">
+
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-primary" id="getScores">Get Scores</button>
+    </div>
+    <!-- <p style="font-size: 150px;">IL A L'AIR GRAVE DANS LA SEDUCTION</p> -->
+</body>
+
+</html>
