@@ -1,0 +1,38 @@
+#gameTitle {
+    font-family: 'Stalinist One', cursive;
+    font-size: 0.8vw;
+}
+
+#gameFrame {
+    position: relative;
+    border: 10px solid #310003;
+    border-radius: 5px;
+    background-color: lightgrey;
+    margin: 50px auto;
+    width: 1280px;
+    height: 470px;
+}
+
+#registerForm {
+    position: absolute; 
+    left: 510px; 
+    top: 110px; 
+    padding: 10px; 
+    border: 4px solid;
+}
+
+#scores {
+    margin: auto;
+    width: 20%;
+}
+
+.innerScore {
+    text-align: center;
+    display: inline-block;
+    margin-left: 5%;
+}
+
+#steps {
+    margin: auto;
+    text-align: center;
+}
