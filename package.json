@@ -15,7 +15,8 @@
     "mongodb",
     "jquery",
     "angularjs",
-    "vuejs"
+    "vuejs",
+    "socket.io"
   ],
   "author": "Taillasson Camille-Olivier",
   "license": "ISC",
