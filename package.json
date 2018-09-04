@@ -15,7 +15,6 @@
     "mongodb",
     "jquery",
     "angularjs",
-    "semantic-ui",
     "vuejs"
   ],
   "author": "Taillasson Camille-Olivier",
@@ -29,6 +28,6 @@
     "mongoose": "^5.2.3",
     "pug": "^2.0.0-rc.4",
     "socket.io": "^2.1.1",
-    "vue": "^2.5.16",
+    "vue": "^2.5.16"
   }
 }
