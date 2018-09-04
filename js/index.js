@@ -1,8 +1,8 @@
 window.addEventListener('DOMContentLoaded', function () {
     var foodInterval;
     var connectionTableFront;
-    var socketIo = io('http://localhost:8888');
-    //var socketIo = io('158.50.163.198:8888')
+    //var socketIo = io('http://localhost:8888');
+    var socketIo = io('158.50.163.198:8888')
     var userInFront = {};
     var foodTableFront = [];
     var scoresTable = [];
@@ -81,7 +81,11 @@ window.addEventListener('DOMContentLoaded', function () {
     });
 
     socketIo.on('gameOver', function (isOver) {
-        gameFrame.style.display = 'none';
+        $('#gameFrame').fadeOut('slow', function(){
+            $('#gameOver').fadeIn('slow', function(){
+                
+            });
+        });
         window.removeEventListener('mousemove', mouseMoving);
         socketIo.emit('gameOver', true);
     });

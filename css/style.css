@@ -3,6 +3,17 @@
     font-size: 0.8vw;
 }
 
+#gameOver {
+    margin: 50px auto;
+    width: 1280px;
+    height: 470px;
+    display: none;
+}
+
+#gameOverLogo {
+    width: 1120px;
+}
+
 #gameFrame {
     position: relative;
     border: 10px solid #310003;

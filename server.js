@@ -1,3 +1,5 @@
+'use strict';
+
 //chargement des modules (dont le module HTTP.)
 const http = require('http');
 const express = require('express');
@@ -9,6 +11,9 @@ const url = 'mongodb://localhost:27017/';
 //création du serveur HTTP.
 var httpServer = http.createServer(app);
 let connectionTable = [];
+let foodTable = [];
+let foodInterval;
+let food;
 let squares = {};
 let squareInterval;
 const userMap = {};
@@ -16,6 +21,7 @@ const userMap = {};
 app.set('view engine', 'pug');
 app.use('/css', express.static('css'));
 app.use('/js', express.static('js'));
+app.use('/img', express.static('img'));
 app.use('/node_modules', express.static('node_modules'));
 app.use('/semantic', express.static('semantic'));
 
@@ -26,6 +32,9 @@ app.get('/', function (req, res, next) {
 // nouvelle instance de 'serveur' websocket
 let socketIo = new SocketIo(httpServer);
 
+/****************************************** TOUTES LE FONCTIONS *********************************************/
+/******************************************   SONT REPERTORIEES *****************************************/
+/******************************************          ICI        ********************************************/
 function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
 };
@@ -82,6 +91,7 @@ function scoreIncrement(user) {
   user.score = user.score + 10;
 };
 
+// Constructeur de Square
 var Square = function () {
   this.x = '0px';
   this.y = '0px';
@@ -90,7 +100,7 @@ var Square = function () {
   this.height = '40px';
   this.width = '40px';
 
-  this.collisionDetection = function(food){
+  this.collisionDetection = function (food) {
     if (parseFloat(food.x) > parseFloat(this.x) + parseFloat(this.width) ||
       parseFloat(food.x) < parseFloat(this.x) - parseFloat(food.width) ||
       parseFloat(food.y) > parseFloat(this.y) + parseFloat(this.height) ||
@@ -110,18 +120,6 @@ var Food = function () {
   this.color = getRandomColor();
   this.width = '8px';
   this.height = '8px';
-
-  /*this.collisionDetection = function (square) {
-
-    if (parseFloat(this.x) > parseFloat(square.x) + parseFloat(square.width) ||
-      parseFloat(this.x) < parseFloat(square.x) - parseFloat(this.width) ||
-      parseFloat(this.y) > parseFloat(square.y) + parseFloat(square.height) ||
-      parseFloat(this.y) < parseFloat(square.y) - parseFloat(this.height)) {
-      return false;
-    } else {
-      return true;
-    }
-  }.bind(this);*/
 };
 
 function canStartGame(userMap) {
@@ -145,35 +143,24 @@ function generateFood(foodTable, foodInterval, food) {
     if (foodTable.length >= 100) {
       clearInterval(foodInterval);
     } else {
-      // - On attribue ici à la variable food, une nouvelle food à chaque fois.
       food = new Food();
-
-      // - on push la food dans le tableau pour garder sa référence à l'instant T. On bouclera le tableau par la suite pour retrouver la référence (collision par exemple).
       foodTable.push(food);
-      // - On l'envoi au server avec l'émit. Du coup, toutes les 0.08 sec une nouvelle food est créée et envoyé au front.
       socketIo.emit('drawFood', food);
     }
   }, 80);
 };
 
 socketIo.on('connection', function (websocketConnection) {
-  let foodTable = [];
-  let foodInterval;
-  let food;
-  let square = new Square();
-  squares[square.id] = square;
-
-  userMap[websocketConnection.id] = {
-    score: 0,
-    ready: false
-  };
-
-
-
   console.log('A new user connected');
   connectionTable.push(websocketConnection.id);
   socketIo.emit('connectionTable', connectionTable);
 
+  let square = new Square();
+  squares[square.id] = square;
+  userMap[websocketConnection.id] = {
+    score: 0,
+    ready: false
+  };
 
   // Gestion nouvel utilisateur
   websocketConnection.on('newUser', function (userName) {
@@ -204,6 +191,7 @@ socketIo.on('connection', function (websocketConnection) {
 
   });
 
+  // Cet event permet de récupérer la liste des users/scores pour les avoir au Front.
   websocketConnection.on('getScores', function (scoresTable) {
     MongoClient.connect(url, function (err, db) {
       if (err) throw err;
@@ -222,18 +210,15 @@ socketIo.on('connection', function (websocketConnection) {
   // Envoi du square et de la food coté client.
   socketIo.emit('drawSquare', square);
 
-  // Quand on reçoit les coordonnées de la souris on les utilises pour faire bouger les squares et détecter les collisions avec les food
+  // Event gérant les mouvements de la souris / square avec les collisions.
   websocketConnection.on('movingMouse', function (mouse) {
-    //console.log('mouse reçu au back : ', mouse);
-
     // - Cette fonction créée plus haut sert à faire bouger le square en fonction des mouvements de la souris.
     movingSquare(square, mouse);
-
 
     // - Parcours du tableau de food pour gérer les collisions avec la méthode collisionDetection codée plus haut.
     // - Incrémentation du score.
     for (let i = 0; i < foodTable.length; i++) {
-      if (square.collisionDetection(foodTable[i])) {
+      if (squares[square.id].collisionDetection(foodTable[i])) {
         socketIo.emit('removeFood', foodTable[i]);
         scoreIncrement(userMap[websocketConnection.id]);
         socketIo.emit('user', userMap);
@@ -252,9 +237,8 @@ socketIo.on('connection', function (websocketConnection) {
     socketIo.emit('drawSquare', square);
   });
 
-  // Si il y a une déconnexion on envoi l'objet contenant les données du square en front
+  // Event gérant la déconnexion du server.
   websocketConnection.on('disconnect', function (square) {
-    // On supprime le square stocké dans l'objet squares
     console.log('Event Disconnect reçu');
     delete squares[square.id];
     for (let i = 0; i < connectionTable.length; i++) {
@@ -263,18 +247,17 @@ socketIo.on('connection', function (websocketConnection) {
         connectionTable.splice(i, 1);
       };
     };
-    // On envoi les donnée du square en front pour le supprimer du DOM.
     socketIo.emit('removeConnection', square);
   });
 
+  // Event gérant la fin du jeu. et la MàJ du score en BDD
   websocketConnection.on('gameOver', function (userMap, isOver) {
-    console.log('isOver ?', isOver)
     if (isOver === true || isOver !== undefined) {
       MongoClient.connect(url, function (err, db) {
         if (err) throw err;
         var dbo = db.db('users');
         var query = {
-          name: userMap[websocketConnection.id].name
+          _id: userMap[websocketConnection.id]._id
         };
         var newValues = {
           $set: {

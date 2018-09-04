@@ -41,15 +41,14 @@ html
                 br
                 | The fastest Hungry Square win !
     #gameZone
+      #gameOver
+        img(src="../img/gameOver.png", alt="Game Over", title="Game Over" id="gameOverLogo")
       #gameFrame
         #registerForm
           .ui.form.success
             .field
               label Pseudo
               input#pseudoInput(placeholder='Votre Pseudo...', name='username', type='text')
-            #greeting.ui.success.message(style='display: none;')
-              .header Merci
-              p Cliquez sur launch pour commencer.
             #submitButton.ui.submit.button Submit
       #scores
         .innerScore
