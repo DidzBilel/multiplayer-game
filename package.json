@@ -2,7 +2,7 @@
   "name": "multiplayer-game",
   "version": "1.0.0",
   "description": "Multiplayer game",
-  "engine": {
+  "engines": {
     "node": "8.11.2"
   },
   "main": "index.js",
