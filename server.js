@@ -274,4 +274,4 @@ socketIo.on('connection', function (websocketConnection) {
   });
 });
 
-httpServer.listen(8888);
+httpServer.listen(process.env.PORT || 8888);
