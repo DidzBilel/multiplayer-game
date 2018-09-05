@@ -8,6 +8,8 @@ const SocketIo = require('socket.io');
 const MongoClient = require('mongodb').MongoClient;
 const url = process.env.MONGODB_URI;
 
+//Création du server HTTP.
+let httpServer = http.createServer(app);
 let connectionTable = [];
 let foodTable = [];
 let foodInterval;
