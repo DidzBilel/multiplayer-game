@@ -169,7 +169,7 @@ socketIo.on('connection', function (websocketConnection) {
     MongoClient.connect(url, function (err, db) {
       const user = userMap[websocketConnection.id]
       if (err) throw err;
-      var dbo = db.db('users');
+      var dbo = db.db('heroku_nk5l3zlf');
       dbo.collection('users').insertOne({
         name: user.name,
         score: user.score
@@ -195,7 +195,7 @@ socketIo.on('connection', function (websocketConnection) {
   websocketConnection.on('getScores', function (scoresTable) {
     MongoClient.connect(url, function (err, db) {
       if (err) throw err;
-      var dbo = db.db('users');
+      var dbo = db.db('heroku_nk5l3zlf');
       dbo.collection('users').find({}, {
         _id: 0
       }).toArray(function (err, result) {
@@ -255,7 +255,7 @@ socketIo.on('connection', function (websocketConnection) {
     if (isOver === true || isOver !== undefined) {
       MongoClient.connect(url, function (err, db) {
         if (err) throw err;
-        var dbo = db.db('users');
+        var dbo = db.db('heroku_nk5l3zlf');
         var query = {
           _id: userMap[websocketConnection.id]._id
         };
