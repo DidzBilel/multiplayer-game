@@ -6,10 +6,8 @@ const express = require('express');
 const app = express();
 const SocketIo = require('socket.io');
 const MongoClient = require('mongodb').MongoClient;
-//const url = 'mongodb://Didz:hungrysquares94@ds143932.mlab.com:43932/heroku_nk5l3zlf';
+const url = process.env.MONGODB_URI;
 
-//création du serveur HTTP.
-var httpServer = http.createServer(app);
 let connectionTable = [];
 let foodTable = [];
 let foodInterval;
@@ -166,7 +164,7 @@ socketIo.on('connection', function (websocketConnection) {
   websocketConnection.on('newUser', function (userName) {
     userMap[websocketConnection.id].name = userName;
 
-    MongoClient.connect(process.env.MONGODB_URI, function (err, db) {
+    MongoClient.connect(url, function (err, db) {
       const user = userMap[websocketConnection.id]
       if (err) throw err;
       var dbo = db.db('heroku_nk5l3zlf');
@@ -193,7 +191,7 @@ socketIo.on('connection', function (websocketConnection) {
 
   // Cet event permet de récupérer la liste des users/scores pour les avoir au Front.
   websocketConnection.on('getScores', function (scoresTable) {
-    MongoClient.connect(process.env.MONGODB_URI, function (err, db) {
+    MongoClient.connect(url, function (err, db) {
       if (err) throw err;
       var dbo = db.db('heroku_nk5l3zlf');
       dbo.collection('users').find({}, {
@@ -253,7 +251,7 @@ socketIo.on('connection', function (websocketConnection) {
   // Event gérant la fin du jeu. et la MàJ du score en BDD
   websocketConnection.on('gameOver', function (userMap, isOver) {
     if (isOver === true || isOver !== undefined) {
-      MongoClient.connect(process.env.MONGODB_URI, function (err, db) {
+      MongoClient.connect(url, function (err, db) {
         if (err) throw err;
         var dbo = db.db('heroku_nk5l3zlf');
         var query = {
