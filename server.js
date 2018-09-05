@@ -6,7 +6,7 @@ const express = require('express');
 const app = express();
 const SocketIo = require('socket.io');
 const MongoClient = require('mongodb').MongoClient;
-const url = 'mongodb://localhost:27017/';
+const url = 'mongodb://Didz:hungrysquares94@ds143932.mlab.com:43932/heroku_nk5l3zlf';
 
 //création du serveur HTTP.
 var httpServer = http.createServer(app);
