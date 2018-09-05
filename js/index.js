@@ -1,8 +1,7 @@
 window.addEventListener('DOMContentLoaded', function () {
     var foodInterval;
     var connectionTableFront;
-    //var socketIo = io('http://localhost:8888');
-    var socketIo = io('158.50.163.198:8888')
+    var socketIo = io('http://localhost:8888');
     var userInFront = {};
     var foodTableFront = [];
     var scoresTable = [];
