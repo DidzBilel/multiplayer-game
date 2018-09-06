@@ -174,7 +174,7 @@ socketIo.on('connection', function (websocketConnection) {
         name: user.name,
         score: user.score
       }, function (err, obj) {
-        if (err){ console.log('error Insert ! ', err); };
+        if (err) throw err;
         console.log('1 user inserted');
         socketIo.emit('user', userMap);
       });
